@@ -33,4 +33,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findMemberByUsername(String name); // 단건
     Optional<Member> findOptionalByUsername(String name); // 단건 Optional
 
+    
+
 }
