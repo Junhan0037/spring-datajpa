@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 
@@ -61,6 +61,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findReadOnlyByUsername(String username); // JPA Hint
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    List<Member> findLockByUsename(String username); // JPA Lock
+    List<Member> findLockByUsername(String username); // JPA Lock
 
 }
