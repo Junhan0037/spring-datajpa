@@ -240,4 +240,20 @@ class MemberRepositoryTest {
         }
     }
 
+    @Test
+    public void queryHint() {
+        //given
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+
+        em.flush();
+        em.clear();
+
+        //when
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+        findMember.setUsername("member2"); // readOnly로 설정되어 있기 때문에 적용이 되지 않는다
+
+        em.flush();
+    }
+
 }
