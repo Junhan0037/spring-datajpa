@@ -12,6 +12,8 @@ import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,9 @@ class MemberRepositoryTest {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     public void testMember() {
@@ -189,6 +194,24 @@ class MemberRepositoryTest {
         assertThat(page.getTotalPages()).isEqualTo(2); // 전체 페이지
         assertThat(page.isFirst()).isTrue(); // 첫번째 페이지인가?
         assertThat(page.hasNext()).isTrue(); // 다음 페이지가 있는가?
+    }
+
+    @Test
+    public void bulkUpdate() {
+        //given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
+        //when
+        int resultCount = memberRepository.bulkAgePlus(20);
+//        em.flush();
+//        em.clear(); // 벌크성 수정 쿼리는 DB에 바로 수정사항을 적용하기 때문에 영속성컨텍스트에는 반영이 되지 않는다 => 1차 캐시를 비워줘야 한다.
+
+        //then
+        assertThat(resultCount).isEqualTo(3);
     }
 
 }
